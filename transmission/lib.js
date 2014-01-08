@@ -1,4 +1,4 @@
-var StopPulse = false;
+var ContinuePulse = false;
 
 Number.prototype.clamp = function(min, max) {
     return Math.min(Math.max(this, min), max);
@@ -95,12 +95,9 @@ function pulseSignal(sig, dat, ix) {
     .transition()
     .duration(500 * Math.random())
     .each("end", function () {
-      if (false == StopPulse) {
+      if (ContinuePulse) {
         // Keep going
         pulseSignal(sig, dat, ix);
-      } else {
-        // Stop the pulsing, setup to go again.
-        StopPulse = false;
       }
     })
     ;

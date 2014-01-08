@@ -34,10 +34,11 @@ var sigs = mkSignals(trans,
 drawSignals(sigs);
 
 KeyboardJS.on('a', function () {
+    ContinuePulse = true;
     pulseSignals(sigs);
 });
 KeyboardJS.on('s', function () {
-    StopPulse = true;
+    ContinuePulse = false;
 });
     </script>
   </body>
