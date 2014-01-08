@@ -43,6 +43,15 @@ function Transmission(signal_count, radius, root) {
         .append('feGaussianBlur')
           .attr('stdDeviation', 1);
 
+  // Layout the signals horizontally and vertically.
+  self.layout = Transmission.defaultLayout;
+  self.layoutX = function (sig) {
+    return self.layout(self, sig).x;
+  };
+  self.layoutY = function (sig) {
+    return self.height / 2;
+  };
+
 
   self.draw = function () {
     var circles = self.svg.selectAll('g.signal')
@@ -55,11 +64,11 @@ function Transmission(signal_count, radius, root) {
             .style('fill', function (sig) { return sig.cfg.color; })
             .attr('opacity', function (sig) { return sig.cfg.opacity; })
             .attr('r', function (sig) { return sig.cfg.radius; })
-            .attr('cx', function (sig) { return Transmission.defaultLayout(self, sig).x; })
-            .attr('cy', self.height / 2)
+            .attr('cx', self.layoutX)
+            .attr('cy', self.layoutY)
             .attr('filter', 'url(#blur)');
     circles.transition()
-      .duration(500)
+      .duration(1500)
       .attr('opacity', 1);
   };
 }
