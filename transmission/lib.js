@@ -1,3 +1,5 @@
+var StopPulse = false;
+
 Number.prototype.clamp = function(min, max) {
     return Math.min(Math.max(this, min), max);
 };
@@ -58,34 +60,56 @@ function mkRandSignals(t) {
   );
 }
 
-function mkSignals(t, posFn, strengthFn, colorFn) {
+function mkSignals(t, posFn, strengthFn, colorFn, opacityFn) {
   return d3.range(t.signalCount).map(function (e) {
-    var pos = posFn(t, e);
-    var strength = strengthFn(t, e);
+    var p = posFn ? posFn(t, e) : {x: 0, y: 0};
+    var s = strengthFn ? strengthFn(t, e) : 50;
+    var c = colorFn ? colorFn(t, e) : "#FFF";
+    var o = opacityFn ? opacityFn(t, e) : 1;
 
     return {
-      color: colorFn(t, e),
-      cx: pos.x,
-      cy: pos.y,
-      r: strength,
+      color: c,
+      opacity: o,
+      cx: p.x,
+      cy: p.y,
+      r: s,
     }
   }).sort(function (a,b) { return (b.r - a.r); });
 }
 
+function pulseSignal(sig, dat, ix) {
+  d3.select(sig)
+    // fade
+    .interrupt()
+    .transition()
+    .duration(200)
+    .attr('opacity', 1)
+    // wait
+    .transition()
+    .duration(500 * Math.random())
+    // fade
+    .transition()
+    .duration(200)
+    .attr('opacity', 0)
+    // wait
+    .transition()
+    .duration(500 * Math.random())
+    .each("end", function () {
+      if (false == StopPulse) {
+        // Keep going
+        pulseSignal(sig, dat, ix);
+      } else {
+        // Stop the pulsing, setup to go again.
+        StopPulse = false;
+      }
+    })
+    ;
+}
+
 function pulseSignals(sigs) {
-  var d = svg.selectAll('g.signal').data(sigs);
+  var d = svg.selectAll('.signal-circle').data(sigs);
   d.each(function (d, i) {
-    d3.select(this).selectAll('.signal-circle')
-      // fade off
-      .transition()
-      .duration(500)
-      .attr('opacity', 0)
-      // wait
-      .delay(1000 * Math.random())
-      .transition()
-      .duration(500)
-      .attr('opacity', 1)
-      ;
+    pulseSignal(this, d, i);
   });
 }
 
@@ -94,6 +118,7 @@ function drawSignals(sigs) {
   d.each(function (d, i) {
     var dur = 300;
     d3.select(this).selectAll('.signal-circle')
+      // bump existing signals
       .transition()
       .duration(dur)
       .attr('r', d.r + 30)
@@ -108,7 +133,7 @@ function drawSignals(sigs) {
   g.insert('circle')
     .classed('signal-circle', true)
     .style('fill', function (sig) { return sig.color; })
-    .attr('opacity', 1)
+    .attr('opacity', function (sig) { return sig.opacity; })
     .attr('r', function (sig) { return sig.r; })
     .attr('cx', function (sig) { return sig.cx; })
     .attr('cy', function (sig) { return sig.cy; })

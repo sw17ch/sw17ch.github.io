@@ -20,21 +20,17 @@ var trans = mkTransmission(1);
 var sigs = mkSignals(trans,
   function (t, e) { return { x: t.width / 2, y: t.height / 2}; },
   function (t, e) { return 100; },
-  function (t, e) { return "#CCC"; }
+  function (t, e) { return "#CCC"; },
+  function (t, e) { return 0; }
 );
 
-function startAnimate() {
-  d3.timer(function () {
-
-  });
-}
-
-KeyboardJS.on('s', function () {
-    drawSignals(sigs);
-});
+drawSignals(sigs);
 
 KeyboardJS.on('a', function () {
     pulseSignals(sigs);
+});
+KeyboardJS.on('s', function () {
+    StopPulse = true;
 });
     </script>
   </body>
