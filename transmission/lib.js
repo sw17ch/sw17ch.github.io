@@ -72,26 +72,43 @@ function mkSignals(t, posFn, strengthFn, colorFn) {
   }).sort(function (a,b) { return (b.r - a.r); });
 }
 
-function drawSignals(sigs) {
+function pulseSignals(sigs) {
   var d = svg.selectAll('g.signal').data(sigs);
   d.each(function (d, i) {
     d3.select(this).selectAll('.signal-circle')
+      // fade off
       .transition()
       .duration(500)
-      .attr('r', d.r + 20)
+      .attr('opacity', 0)
+      // wait
+      .delay(1000 * Math.random())
       .transition()
       .duration(500)
+      .attr('opacity', 1)
+      ;
+  });
+}
+
+function drawSignals(sigs) {
+  var d = svg.selectAll('g.signal').data(sigs);
+  d.each(function (d, i) {
+    var dur = 300;
+    d3.select(this).selectAll('.signal-circle')
+      .transition()
+      .duration(dur)
+      .attr('r', d.r + 30)
+      .transition()
+      .duration(dur)
       .attr('r', d.r);
   });
   g = d.enter()
     .append('g')
     .classed('signal', true);
 
-  console.log(g);
-  
   g.insert('circle')
     .classed('signal-circle', true)
     .style('fill', function (sig) { return sig.color; })
+    .attr('opacity', 1)
     .attr('r', function (sig) { return sig.r; })
     .attr('cx', function (sig) { return sig.cx; })
     .attr('cy', function (sig) { return sig.cy; })
