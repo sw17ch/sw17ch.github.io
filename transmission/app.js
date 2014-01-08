@@ -27,14 +27,18 @@ function performHighlight() {
       .transition()
       .duration(500)
       .style('fill', '#FF0000')
+      .style('stroke', '#0000FF')
+      .style('stroke-width', 4)
       .transition()
       .duration(500)
+      .style('stroke', '#000000')
+      .style('stroke-width', 0)
       .style('fill', d.color)
       ;
   });
 }
 
-var transmission = (function () {
+function mkTransmission() {
   var width = $(window).width(),
       height = $(window).height(),
       maxRadius = 100,
@@ -56,24 +60,29 @@ var transmission = (function () {
       maxY: height - drawMargin,
     }
   }
-})();
+}
 
-var signals = d3.range(transmission.signalCount).map(function (e) {
-  var x = (Math.random() * transmission.width).clamp(
-          transmission.derived.minX,
-          transmission.derived.maxX);
-  var y = (Math.random() * transmission.height).clamp(
-          transmission.derived.minY,
-          transmission.derived.maxY);
-  var strength = Math.random() * transmission.maxRadius;
+function mkSignals(t) {
+  return d3.range(transmission.signalCount).map(function (e) {
+    var x = (Math.random() * t.width).clamp(
+            t.derived.minX,
+            t.derived.maxX);
+    var y = (Math.random() * t.height).clamp(
+            t.derived.minY,
+            t.derived.maxY);
+    var strength = Math.random() * t.maxRadius;
 
-  return {
-    color: randGrey(),
-    cx: x,
-    cy: y,
-    r: strength,
-  }
-}).sort(function (a,b) { return (b.cx - a.cx); });
+    return {
+      color: randGrey(),
+      cx: x,
+      cy: y,
+      r: strength,
+    }
+  }).sort(function (a,b) { return (b.cx - a.cx); });
+}
+
+var transmission = mkTransmission();
+var signals = mkSignals(transmission);
 
 var svg = d3.select('#transmission')
   .append('svg')
@@ -82,6 +91,9 @@ var svg = d3.select('#transmission')
   .on('click', function () {
     performHighlight();
   });
+d3.select('body').on('keydown', function () {
+  performHighlight();
+});
 var defs = svg.append('defs');
 
 defs.append('filter')

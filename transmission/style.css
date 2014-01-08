@@ -5,7 +5,10 @@ body {
   margin: 0px;
 }
 
-circle.highlight {
-  fill:#CC0000;
-  fill-opacity: 0;
+#info {
+  position: absolute;
+  bottom: 1em;
+  right: 1em;
+  color: #FFFFFF;
+  font-family: 'Open Sans', sans-serif;
 }
