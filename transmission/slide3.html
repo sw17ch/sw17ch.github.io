@@ -17,14 +17,27 @@
     <script src="lib.js"></script>
     <script type="text/javascript">
 var trans = mkTransmission(2);
+var radius = 100;
 var sigs = mkSignals(trans,
-  function (t, e) { return { x: t.width / 2, y: t.height / 2}; },
-  function (t, e) { return 100; },
-  function (t, e) { return "#CCC"; }
+  function (t, e) {
+    var offset = radius * 2;
+    return {
+      x: offset + ((radius * 3) * e),
+      y: t.height / 2,
+    };
+  },
+  function (t, e) { return radius; },
+  function (t, e) { return "#CCC"; },
+  function (t, e) { return 0; }
 );
 
+drawSignals(sigs);
+
+KeyboardJS.on('a', function () {
+    pulseSignals(sigs);
+});
 KeyboardJS.on('s', function () {
-    drawSignals(sigs);
+    StopPulse = true;
 });
     </script>
   </body>
