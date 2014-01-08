@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Transmission // #2</title>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+    <link href='style.css' rel='stylesheet' type='text/css' />
+  </head>
+  <body>
+    <div id="transmission">
+    </div>
+    <div id="info">
+      Transmission
+    </div>
+    <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="keyboard.js"></script>
+    <script src="lib.js"></script>
+    <script type="text/javascript">
+var trans = mkTransmission(1);
+var sigs = mkSignals(trans,
+  function (t, e) { return { x: t.width / 2, y: t.height / 2}; },
+  function (t, e) { return 100; },
+  function (t, e) { return "#CCC"; }
+);
+
+KeyboardJS.on('s', function () {
+    drawSignals(sigs);
+});
+    </script>
+  </body>
+</html>
+
