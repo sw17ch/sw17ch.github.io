@@ -1,4 +1,5 @@
 var ContinuePulse = false;
+var PulseLog = [];
 
 Number.prototype.clamp = function(min, max) {
     return Math.min(Math.max(this, min), max);
@@ -77,23 +78,28 @@ function mkSignals(t, posFn, strengthFn, colorFn, opacityFn) {
   }).sort(function (a,b) { return (b.r - a.r); });
 }
 
-function pulseSignal(sig, dat, ix) {
+function pulseSignal(sig, dat, ix, scale) {
+  var scale = scale ? scale : 1000;
+  var hold = scale;
+  var trans = 200;
+
   d3.select(sig)
     // fade
     .interrupt()
     .transition()
-    .duration(200)
+    .each("start", function () { PulseLog.push({ix: ix, ev: "on"}); })
+    .duration(hold * Math.random())
+    .transition()
+    .duration(trans)
     .attr('opacity', 1)
     // wait
     .transition()
-    .duration(500 * Math.random())
+    .duration(hold * Math.random())
     // fade
     .transition()
-    .duration(200)
+    .each("start", function () { PulseLog.push({ix: ix, ev: "off"}); })
+    .duration(trans)
     .attr('opacity', 0)
-    // wait
-    .transition()
-    .duration(500 * Math.random())
     .each("end", function () {
       if (ContinuePulse) {
         // Keep going
@@ -103,10 +109,10 @@ function pulseSignal(sig, dat, ix) {
     ;
 }
 
-function pulseSignals(sigs) {
+function pulseSignals(sigs, scale) {
   var d = svg.selectAll('.signal-circle').data(sigs);
   d.each(function (d, i) {
-    pulseSignal(this, d, i);
+    pulseSignal(this, d, i, scale);
   });
 }
 

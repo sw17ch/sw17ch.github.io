@@ -27,18 +27,24 @@ var sigs = mkSignals(trans,
     };
   },
   function (t, e) { return radius; },
-  function (t, e) { return "#CCC"; },
+  function (t, e) { return ["#CCC", "#C00"][e]; },
   function (t, e) { return 0; }
 );
+
+function beginRecording(sigs) {
+}
 
 drawSignals(sigs);
 
 KeyboardJS.on('a', function () {
     ContinuePulse = true;
-    pulseSignals(sigs);
+    pulseSignals(sigs, 5000);
 });
 KeyboardJS.on('s', function () {
     ContinuePulse = false;
+});
+KeyboardJS.on('r', function () {
+    beginRecording();
 });
     </script>
   </body>
