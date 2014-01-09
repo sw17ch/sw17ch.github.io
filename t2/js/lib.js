@@ -15,8 +15,8 @@ Color.randGrey = function () {
   return ("#" + Array(4).join(single));
 }
 
-function Transmission(signal_count, radius, root) {
-  self = this;
+function Transmission(signal_count, radius) {
+  var self = this;
   self.root = d3.select('#transmission');
 
   self.width = $(window).width();
@@ -54,6 +54,9 @@ function Transmission(signal_count, radius, root) {
 
   self.update = function (updateFn) {
     self.signals = updateFn(self.signals);
+    console.log(self.signals.map(function (s) {
+      return s.cfg.opacity;
+    }));
   };
 
 
@@ -112,13 +115,6 @@ Transmission.defaultLayout = function (t, sig) {
 function Signal(cfg) {
   this.cfg = cfg;
 }
-
-Signal.defaultSignal = new Signal({
-  index: undefined,
-  radius: 0,
-  color: "#000",
-  opacity: 0
-});
 
 // This should always be on.
 KeyboardJS.on('0 1 2 3 4 5 6 7 8 9', function (k) {
