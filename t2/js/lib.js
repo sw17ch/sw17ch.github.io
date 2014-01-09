@@ -66,10 +66,20 @@ function Transmission(signal_count, radius, root) {
             .attr('r', function (sig) { return sig.cfg.radius; })
             .attr('cx', self.layoutX)
             .attr('cy', self.layoutY)
-            .attr('filter', 'url(#blur)');
+            .attr('filter', 'url(#blur)')
+            ;
     circles.transition()
       .duration(1500)
-      .attr('opacity', 1);
+      .attr('opacity', 1)
+      ;
+  };
+
+  self.select = function (andThen) {
+    andThen(
+        self.svg
+          .selectAll('.signal-circle')
+          .data(self.signals)
+        );
   };
 }
 
@@ -83,8 +93,6 @@ Transmission.defaultLayout = function (t, sig) {
   var offset = (pad * ix) + (count == 1 ? t.radius : (t.radius * 2 * ix)) + (count == 1 ? 0 : pad / 2);
 
   var x = margin + offset;
-
-  console.log(ix, drawWidth, t.width, margin, x);
 
   return {x: x, y: t.height / 2};
 };
