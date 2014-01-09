@@ -73,6 +73,10 @@ function Transmission(signal_count, radius, root) {
     }
   };
 
+  self.erase = function () {
+    self.svg.selectAll('g.signal').remove();
+  }
+
   self.select = function (andThen) {
     andThen(
         self.svg
