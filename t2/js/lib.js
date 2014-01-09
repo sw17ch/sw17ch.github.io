@@ -15,6 +15,29 @@ Color.randGrey = function () {
   return ("#" + Array(4).join(single));
 }
 
+var history = [];
+function addHistory(e) {
+  if (history.length > 0) {
+    var l = history.slice(-1)[0];
+
+    _.map(_.zip(e,l), function (a) {
+      return a[0] === a[1];
+    });
+
+    var identical = _.reduce(_.zip(e,l), function (memo, a) {
+      return memo && (a[0] === a[1]);
+    }, true);
+
+    if (!identical) {
+      history.push(e);
+    }
+  } else {
+    history.push(e);
+  }
+
+  return history;
+}
+
 function Transmission(signal_count, radius) {
   var self = this;
   self.root = d3.select('#transmission');
@@ -54,7 +77,7 @@ function Transmission(signal_count, radius) {
 
   self.update = function (updateFn) {
     self.signals = updateFn(self.signals);
-    console.log(self.signals.map(function (s) {
+    addHistory(self.signals.map(function (s) {
       return s.cfg.opacity;
     }));
   };
