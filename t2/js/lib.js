@@ -110,3 +110,16 @@ Signal.defaultSignal = new Signal({
   color: "#000",
   opacity: 0
 });
+
+// This should always be on.
+KeyboardJS.on('0 1 2 3 4 5 6 7 8 9', function (k) {
+  var c = String.fromCharCode(k.keyCode);
+
+  var url = "index.html";
+
+  if (0 < c) {
+    url = ("s" + c + ".html");
+  }
+
+  window.location.href = url;
+});
