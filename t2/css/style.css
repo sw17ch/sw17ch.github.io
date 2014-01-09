@@ -3,7 +3,7 @@ body {
   border: 0px;
   padding: 0px;
   margin: 0px;
-  color: #999;
+  color: #777;
   font-family: 'Open Sans', sans-serif;
 }
 
@@ -12,4 +12,16 @@ body {
   bottom: 1em;
   right: 1em;
   text-align: right;
+}
+
+#info > #name {
+  font-size: 0.7em;
+}
+
+#info > #company {
+  font-size: 0.7em;
+}
+
+#title {
+  font-size: 1.1em;
 }

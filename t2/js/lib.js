@@ -107,6 +107,3 @@ Signal.defaultSignal = new Signal({
   color: "#000",
   opacity: 0
 });
-
-var __t = new Transmission(5);
-__t.draw();
