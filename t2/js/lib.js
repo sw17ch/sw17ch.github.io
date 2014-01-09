@@ -52,6 +52,10 @@ function Transmission(signal_count, radius, root) {
     return self.height / 2;
   };
 
+  self.update = function (updateFn) {
+    self.signals = updateFn(self.signals);
+  };
+
 
   self.draw = function (andThen) {
     var circles = self.svg.selectAll('g.signal')
@@ -61,17 +65,22 @@ function Transmission(signal_count, radius, root) {
           .classed('signal', true)
           .append('circle')
             .classed('signal-circle', true)
-            .style('fill', function (sig) { return sig.cfg.color; })
-            .attr('opacity', function (sig) { return sig.cfg.opacity; })
-            .attr('r', function (sig) { return sig.cfg.radius; })
-            .attr('cx', self.layoutX)
-            .attr('cy', self.layoutY)
-            .attr('filter', 'url(#blur)')
-            ;
+            .call(self.paint);
     if(andThen) {
       andThen(circles);
     }
   };
+
+  self.paint = function (obj) {
+    obj
+      .style('fill', function (sig) { return sig.cfg.color; })
+      .attr('opacity', function (sig) { return sig.cfg.opacity; })
+      .attr('r', function (sig) { return sig.cfg.radius; })
+      .attr('cx', self.layoutX)
+      .attr('cy', self.layoutY)
+      .attr('filter', 'url(#blur)')
+      ;
+  }
 
   self.erase = function () {
     self.svg.selectAll('g.signal').remove();
@@ -122,4 +131,8 @@ KeyboardJS.on('0 1 2 3 4 5 6 7 8 9', function (k) {
   }
 
   window.location.href = url;
+});
+
+KeyboardJS.on('e', function () {
+  __t.erase();
 });
