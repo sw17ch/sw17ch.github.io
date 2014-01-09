@@ -53,7 +53,7 @@ function Transmission(signal_count, radius, root) {
   };
 
 
-  self.draw = function () {
+  self.draw = function (andThen) {
     var circles = self.svg.selectAll('g.signal')
       .data(self.signals)
       .enter()
@@ -68,10 +68,9 @@ function Transmission(signal_count, radius, root) {
             .attr('cy', self.layoutY)
             .attr('filter', 'url(#blur)')
             ;
-    circles.transition()
-      .duration(1500)
-      .attr('opacity', 1)
-      ;
+    if(andThen) {
+      andThen(circles);
+    }
   };
 
   self.select = function (andThen) {
