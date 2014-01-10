@@ -10,11 +10,14 @@ function updateToRandom() {
 }
 
 function pulse(circles) {
-  circles.transition().duration(50)
+  circles.transition().duration(250)
     .call(updateToRandom)
     .call(__t.paint)
-    .transition().duration(100)
-      .each('end', function () { pulse(circles); });
+    .transition().duration(150)
+      .each('end', function () {
+        pulse(circles);
+        __t.drawHistory();
+      });
 }
 
 KeyboardJS.on('a', function () {
@@ -22,4 +25,8 @@ KeyboardJS.on('a', function () {
   __t.select(function (circles) {
     pulse(circles);
   });
+});
+
+KeyboardJS.on('h', function () {
+  __t.drawHistory();
 });

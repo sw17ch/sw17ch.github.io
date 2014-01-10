@@ -15,29 +15,6 @@ Color.randGrey = function () {
   return ("#" + Array(4).join(single));
 }
 
-var history = [];
-function addHistory(e) {
-  if (history.length > 0) {
-    var l = history.slice(-1)[0];
-
-    _.map(_.zip(e,l), function (a) {
-      return a[0] === a[1];
-    });
-
-    var identical = _.reduce(_.zip(e,l), function (memo, a) {
-      return memo && (a[0] === a[1]);
-    }, true);
-
-    if (!identical) {
-      history.push(e);
-    }
-  } else {
-    history.push(e);
-  }
-
-  return history;
-}
-
 function Transmission(signal_count, radius) {
   var self = this;
   self.root = d3.select('#transmission');
@@ -65,6 +42,8 @@ function Transmission(signal_count, radius) {
         .attr('id', 'blur')
         .append('feGaussianBlur')
           .attr('stdDeviation', 1);
+  self.signalSvg  = self.svg.append('g').classed('signals', true);
+  self.historySvg = self.svg.append('g').classed('history', true);
 
   // Layout the signals horizontally and vertically.
   self.layout = Transmission.defaultLayout;
@@ -77,21 +56,93 @@ function Transmission(signal_count, radius) {
 
   self.update = function (updateFn) {
     self.signals = updateFn(self.signals);
-    addHistory(self.signals.map(function (s) {
+    self.addHistory(self.signals.map(function (s) {
       return s.cfg.opacity;
     }));
   };
 
 
-  self.draw = function (andThen) {
-    var circles = self.svg.selectAll('g.signal')
-      .data(self.signals)
+  self.history = [];
+  self.historyIx = 0;
+  self.addHistory = function (e) {
+    var el = function () {
+      return {
+        ev: e,
+        ix: (self.historyIx += 1),
+      };
+    }
+    if (self.history.length > 0) {
+      var l = self.history.slice(-1)[0];
+  
+      _.map(_.zip(e,l.ev), function (a) {
+        return a[0] === a[1];
+      });
+  
+      var identical = _.reduce(_.zip(e,l.ev), function (memo, a) {
+        return memo && (a[0] === a[1]);
+      }, true);
+  
+      if (!identical) {
+        self.history.push(el());
+      }
+    } else {
+      self.history.push(el());
+    }
+
+    if (self.history.length > 10) {
+      self.history = _.last(self.history, 10);
+    }
+
+    return self.history;
+  };
+
+  self.drawHistory = function () {
+    var hist = self.historySvg.selectAll('.hist')
+      .data(self.history, function (o) {
+        return o.ix;
+      })
+
+    hist.exit().remove();
+    hist.transition()
+      .duration(500)
+      .call(self.paintHistory)
+      ;
+    hist
       .enter()
-        .append('g')
-          .classed('signal', true)
-          .append('circle')
-            .classed('signal-circle', true)
-            .call(self.paint);
+        .append('ellipse')
+          .classed('hist',true)
+          .call(self.paintHistory)
+          ;
+  };
+
+  self.paintHistory = function (obj) {
+    obj
+      .style('fill', '#f00')
+      .attr('rx', function (d) { return 10 + (10 * d.ev[0]); })
+      .attr('ry', function (d) { return 10 + (10 * d.ev[1]); })
+      .attr('cx',
+          function (d, i) {
+            var order = self.historyIx - d.ix;
+            var offset = 50 + (order * 50);
+
+            console.log(order, offset);
+
+            return offset;
+          })
+      .attr('cy', 100)
+      .attr('filter', 'url(#blur)')
+      ;
+  };
+
+  self.draw = function (andThen) {
+    var circles = self.signalSvg.selectAll('g.signal')
+      .data(self.signals)
+        .enter()
+          .append('g')
+            .classed('signal', true)
+            .append('circle')
+              .classed('signal-circle', true)
+              .call(self.paint);
     if(andThen) {
       andThen(circles);
     }
