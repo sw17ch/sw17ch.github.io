@@ -226,7 +226,3 @@ KeyboardJS.on('0 1 2 3 4 5 6 7 8 9', function (k) {
 
   window.location.href = url;
 });
-
-KeyboardJS.on('e', function () {
-  __t.erase();
-});
