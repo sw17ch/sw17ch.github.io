@@ -125,12 +125,11 @@ function Transmission(signal_count, radius) {
           function (d, i) {
             var order = self.historyIx - d.ix;
             var offset = 50 + (order * 50);
+            var buffer = self.width / 2;
 
-            console.log(order, offset);
-
-            return offset;
+            return buffer + offset;
           })
-      .attr('cy', 100)
+      .attr('cy', self.height / 2)
       .attr('filter', 'url(#blur)')
       ;
   };
@@ -152,7 +151,7 @@ function Transmission(signal_count, radius) {
   self.paint = function (obj) {
     obj
       .style('fill', function (sig) { return sig.cfg.color; })
-      .attr('opacity', function (sig) { return sig.cfg.opacity; })
+      .attr('opacity', function (sig) { console.log(sig); return sig.cfg.opacity; })
       .attr('r', function (sig) { return sig.cfg.radius; })
       .attr('cx', self.layoutX)
       .attr('cy', self.layoutY)
