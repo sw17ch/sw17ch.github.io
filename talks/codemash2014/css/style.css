@@ -3,27 +3,27 @@ body {
   border: 0px;
   padding: 0px;
   margin: 0px;
-  color: #555;
+  color: #CCC;
   font-family: 'Open Sans', sans-serif;
 }
 
 #info {
   position: absolute;
-  bottom: 1em;
-  right: 1em;
+  bottom: 1.5em;
+  right: 2em;
   text-align: right;
 }
 
-#info > #name {
-  font-size: 0.7em;
+#name {
+  font-size: 1em;
 }
 
 #logo {
   position: absolute;
-  top: 0em;
-  left: 0em;
+  top: 1em;
+  left: 5em;
   text-left: right;
-  opacity: 0.3;
+  opacity: 0.4;
 }
 
 #title {
