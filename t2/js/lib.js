@@ -113,15 +113,16 @@ function Transmission(signal_count, radius) {
       .enter()
         .append('ellipse')
           .classed('hist',true)
-          .call(self.paintHistory, 0.5)
+          .call(self.paintHistory, '#0c0')
           ;
   };
 
-  self.paintHistory = function (obj, initOpac) {
-    iniOpac = initOpac ? initOpac : 1;
+  self.paintHistory = function (obj, initColor) {
+    // iniOpac = initOpac ? initOpac : 1;
+    initColor = initColor ? initColor : '#f00';
     obj
-      .style('fill', '#f00')
-      .attr('opacity', initOpac)
+      .style('fill', initColor)
+      .attr('opacity', 1)
       .attr('rx', function (d) { return 15 + (15 * d.ev[0]); })
       .attr('ry', function (d) { return 15 + (15 * d.ev[1]); })
       .attr('cx',
