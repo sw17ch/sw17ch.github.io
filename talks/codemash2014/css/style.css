@@ -3,7 +3,7 @@ body {
   border: 0px;
   padding: 0px;
   margin: 0px;
-  color: #CCC;
+  color: #DDD;
   font-family: 'Open Sans', sans-serif;
 }
 
@@ -15,7 +15,11 @@ body {
 }
 
 #name {
-  font-size: 1em;
+  font-size: 1.2em;
+}
+
+#title {
+  font-size: 1.5em;
 }
 
 #logo {
@@ -23,9 +27,5 @@ body {
   top: 1em;
   left: 5em;
   text-left: right;
-  opacity: 0.4;
-}
-
-#title {
-  font-size: 1.1em;
+  opacity: 0.9;
 }
