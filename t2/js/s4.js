@@ -27,12 +27,12 @@ function updateToRandom() {
 function pulse(circles) {
   circles.transition().duration(750)
     .call(updateToRandom)
+    .call(__t.drawHistory)
     .call(__t.paint)
     .transition().duration(750)
       .each('end', function (e) {
         if (e.cfg.index == 0) {
           pulse(circles);
-          __t.drawHistory();
         }
       });
 }
@@ -42,8 +42,4 @@ KeyboardJS.on('a', function () {
   __t.select(function (circles) {
     pulse(circles);
   });
-});
-
-KeyboardJS.on('h', function () {
-  __t.drawHistory();
 });
