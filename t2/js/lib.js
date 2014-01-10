@@ -90,8 +90,9 @@ function Transmission(signal_count, radius) {
       self.history.push(el());
     }
 
-    if (self.history.length > 10) {
-      self.history = _.last(self.history, 10);
+    var maxHist = 10;
+    if (self.history.length > maxHist) {
+      self.history = _.last(self.history, maxHist);
     }
 
     return self.history;
@@ -121,12 +122,12 @@ function Transmission(signal_count, radius) {
     obj
       .style('fill', '#f00')
       .attr('opacity', initOpac)
-      .attr('rx', function (d) { return 10 + (10 * d.ev[0]); })
-      .attr('ry', function (d) { return 10 + (10 * d.ev[1]); })
+      .attr('rx', function (d) { return 15 + (15 * d.ev[0]); })
+      .attr('ry', function (d) { return 15 + (15 * d.ev[1]); })
       .attr('cx',
           function (d, i) {
             var order = self.historyIx - d.ix;
-            var offset = 50 + (order * 50);
+            var offset = 65 + (order * 65);
             var buffer = self.width / 2;
 
             return buffer + offset;

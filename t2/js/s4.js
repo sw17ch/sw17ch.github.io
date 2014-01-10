@@ -1,4 +1,4 @@
-var __t = new Transmission(2, 20);
+var __t = new Transmission(2, 30);
 
 function updateToRandom() {
   __t.update(function (sigs) {
