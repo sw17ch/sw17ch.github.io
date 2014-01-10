@@ -11,10 +11,10 @@ function updateToRandom() {
 }
 
 function pulse(circles) {
-  circles.transition().duration(250)
+  circles.transition().duration(500)
     .call(updateToRandom)
     .call(__t.paint)
-    .transition().duration(100)
+    .transition().duration(500)
       .each('end', function () { pulse(circles); });
 }
 

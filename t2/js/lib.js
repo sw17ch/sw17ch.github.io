@@ -104,7 +104,11 @@ function Transmission(signal_count, radius) {
         return o.ix;
       })
 
-    hist.exit().remove();
+    hist.exit()
+      .transition()
+      .duration(500)
+      .attr('opacity', 0)
+      .remove();
     hist.transition()
       .duration(500)
       .call(self.paintHistory)
@@ -113,6 +117,7 @@ function Transmission(signal_count, radius) {
       .enter()
         .append('ellipse')
           .classed('hist',true)
+          .attr('opacity', 0)
           .call(self.paintHistory, '#0c0')
           ;
   };
@@ -122,7 +127,6 @@ function Transmission(signal_count, radius) {
     initColor = initColor ? initColor : '#f00';
     obj
       .style('fill', initColor)
-      .attr('opacity', 1)
       .attr('rx', function (d) { return 15 + (15 * d.ev[0]); })
       .attr('ry', function (d) { return 15 + (15 * d.ev[1]); })
       .attr('cx',
@@ -135,6 +139,8 @@ function Transmission(signal_count, radius) {
           })
       .attr('cy', self.height / 2)
       .attr('filter', 'url(#blur)')
+      .transition().duration(1000)
+        .attr('opacity', 1)
       ;
   };
 

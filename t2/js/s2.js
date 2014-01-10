@@ -27,7 +27,7 @@ function pulse(circles) {
       .transition().duration(1500)
         .call(updateToTransparent)
         .call(__t.paint)
-          .transition().duration(3000)
+          .transition().duration(1500)
           .each('end', function () { pulse(circles); })
           ;
 }

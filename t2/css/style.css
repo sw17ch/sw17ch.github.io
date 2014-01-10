@@ -3,7 +3,7 @@ body {
   border: 0px;
   padding: 0px;
   margin: 0px;
-  color: #777;
+  color: #555;
   font-family: 'Open Sans', sans-serif;
 }
 
@@ -18,8 +18,12 @@ body {
   font-size: 0.7em;
 }
 
-#info > #company {
-  font-size: 0.7em;
+#logo {
+  position: absolute;
+  top: 0em;
+  left: 0em;
+  text-left: right;
+  opacity: 0.3;
 }
 
 #title {
