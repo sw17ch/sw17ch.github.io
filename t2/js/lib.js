@@ -56,7 +56,7 @@ function Transmission(signal_count, radius) {
   };
 
   self.update = function (updateFn) {
-    self.signals = updateFn(self.signals);
+    updateFn(self.signals);
     self.addHistory(self.signals.map(function (s) {
       return s.cfg.opacity;
     }));
@@ -112,13 +112,15 @@ function Transmission(signal_count, radius) {
       .enter()
         .append('ellipse')
           .classed('hist',true)
-          .call(self.paintHistory)
+          .call(self.paintHistory, 0.5)
           ;
   };
 
-  self.paintHistory = function (obj) {
+  self.paintHistory = function (obj, initOpac) {
+    iniOpac = initOpac ? initOpac : 1;
     obj
       .style('fill', '#f00')
+      .attr('opacity', initOpac)
       .attr('rx', function (d) { return 10 + (10 * d.ev[0]); })
       .attr('ry', function (d) { return 10 + (10 * d.ev[1]); })
       .attr('cx',
@@ -151,7 +153,7 @@ function Transmission(signal_count, radius) {
   self.paint = function (obj) {
     obj
       .style('fill', function (sig) { return sig.cfg.color; })
-      .attr('opacity', function (sig) { console.log(sig); return sig.cfg.opacity; })
+      .attr('opacity', function (sig) { return sig.cfg.opacity; })
       .attr('r', function (sig) { return sig.cfg.radius; })
       .attr('cx', self.layoutX)
       .attr('cy', self.layoutY)
