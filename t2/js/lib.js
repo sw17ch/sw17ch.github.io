@@ -46,12 +46,13 @@ function Transmission(signal_count, radius) {
   self.historySvg = self.svg.append('g').classed('history', true);
 
   // Layout the signals horizontally and vertically.
-  self.layout = Transmission.defaultLayout;
+  // self.layout = Transmission.defaultLayout;
+  self.layout = Transmission.verticalLayout;
   self.layoutX = function (sig) {
     return self.layout(self, sig).x;
   };
   self.layoutY = function (sig) {
-    return self.height / 2;
+    return self.layout(self, sig).y;
   };
 
   self.update = function (updateFn) {
@@ -184,6 +185,20 @@ Transmission.defaultLayout = function (t, sig) {
   var x = margin + offset;
 
   return {x: x, y: t.height / 2};
+};
+
+Transmission.verticalLayout = function (t, sig) {
+  var count = t.signals.length;
+  var pad = t.radius * 2;
+  var ix = sig.cfg.index;
+
+  var drawHeight = (pad * (count - 1)) + (t.radius * 2 * count);
+  var margin = (t.height - drawHeight) / 2;
+  var offset = (pad * ix) + (count == 1 ? t.radius : (t.radius * 2 * ix)) + (count == 1 ? 0 : pad / 2);
+
+  var y = margin + offset;
+
+  return { x: t.width / 2, y: y };
 };
 
 function Signal(cfg) {
